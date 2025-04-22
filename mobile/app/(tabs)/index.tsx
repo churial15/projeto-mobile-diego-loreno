@@ -1,56 +1,57 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { LoginForm } from '@/components/LoginForm';
+import SidebarMenu from '@/components/SidebarMenu'; // ✅ Importa o menu lateral
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={{ flex: 1 }}>
+      <SidebarMenu /> {/* ✅ Insere o menu lateral aqui */}
+
+      <ParallaxScrollView
+        headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+        headerImage={
+          <Image
+            source={require('@/assets/images/partial-react-logo.png')}
+            style={styles.reactLogo}
+          />
+        }>
+
+        <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title">BEM VINDO AO SEU BANCO!</ThemedText>
+          <HelloWave />
+        </ThemedView>
+
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Faça login para ter acesso à sua conta:</ThemedText>
+          <LoginForm />
+        </ThemedView>
+
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Tipos de pagamento:</ThemedText>
+        </ThemedView>
+
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Cartão de crédito</ThemedText>
+          <ThemedText type="subtitle">Fatura atual:</ThemedText>
+
+          <ThemedView style={styles.balanceContainer}>
+            <Text style={styles.balanceLabel}></Text>
+
+            <View style={styles.topLine}></View>
+
+            <View style={styles.balanceBox}>
+              <Text style={styles.balanceAmount}>R$ 3.500,00</Text>
+            </View>
+
+            <View style={styles.bottomLine}></View>
+          </ThemedView>
+        </ThemedView>
+      </ParallaxScrollView>
+    </View>
   );
 }
 
@@ -71,4 +72,38 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
+  balanceContainer: {
+    alignItems: 'flex-start',
+    marginTop: 16,
+    gap: 8,
+    width: '100%',
+    paddingLeft: 20,
+  },
+  balanceLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  balanceBox: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  balanceAmount: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  topLine: {
+    width: '60%',
+    borderTopWidth: 1,
+    borderColor: '#D3D3D3',
+    marginTop: 8,
+  },
+  bottomLine: {
+    width: '60%',
+    borderBottomWidth: 1,
+    borderColor: '#D3D3D3',
+    marginBottom: 8,
+  },
 });
+
