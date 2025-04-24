@@ -9,19 +9,17 @@ import SidebarMenu from '@/components/SidebarMenu'; // ✅ Importa o menu latera
 export default function HomeScreen() {
   return (
     <View style={{ flex: 1 }}>
-      <SidebarMenu /> {/* ✅ Insere o menu lateral aqui */}
+      <SidebarMenu />
 
       <ParallaxScrollView
         headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
         headerImage={
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('@/assets/images/logo_banco_virtual.png')}
-              style={styles.reactLogo}
-            />
-          </View>
-        }>
-
+          <Image
+            source={require('@/assets/images/logo_banco_virtual.png')}
+            style={styles.reactLogo}
+          />
+        }
+      >
         <ThemedView style={styles.titleContainer}>
           <ThemedText type="title">BEM VINDO AO SEU BANCO!</ThemedText>
           <HelloWave />
@@ -67,20 +65,11 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
-  // Container que garante a centralização da logo
-  logoContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 20, // Ajuste conforme necessário
-    left: 0,
-    right: 0,
-  },
   reactLogo: {
-    height: 178,
-    width: 290,
-    resizeMode: 'contain', // Garante que a logo se ajusta proporcionalmente
+    width: '100%',
+    height: 250, // pode ajustar se quiser mais alta
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   balanceContainer: {
     alignItems: 'flex-start',
@@ -116,4 +105,5 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
+
 
