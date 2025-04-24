@@ -3,7 +3,7 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { LoginForm } from '@/components/LoginForm';
+import { LoginForm } from '@/components/loginform';
 import SidebarMenu from '@/components/SidebarMenu'; // ✅ Importa o menu lateral
 
 export default function HomeScreen() {
@@ -14,10 +14,12 @@ export default function HomeScreen() {
       <ParallaxScrollView
         headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
         headerImage={
-          <Image
-            source={require('@/assets/images/partial-react-logo.png')}
-            style={styles.reactLogo}
-          />
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('@/assets/images/logo_banco_virtual.png')}
+              style={styles.reactLogo}
+            />
+          </View>
         }>
 
         <ThemedView style={styles.titleContainer}>
@@ -65,12 +67,20 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
+  // Container que garante a centralização da logo
+  logoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 20, // Ajuste conforme necessário
+    left: 0,
+    right: 0,
+  },
   reactLogo: {
     height: 178,
     width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+    resizeMode: 'contain', // Garante que a logo se ajusta proporcionalmente
   },
   balanceContainer: {
     alignItems: 'flex-start',
