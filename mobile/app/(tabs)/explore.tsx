@@ -1,109 +1,157 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, Image, Pressable, Animated } from 'react-native';
+import React, { useRef } from 'react';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { ThemedText } from '@/components/ThemedText';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { Collapsible } from '@/components/Collapsible';
 
 export default function TabTwoScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerBackgroundColor={{ light: '#f0f0f0', dark: '#1a1a1a' }}
       headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
+        <Image source={require('@/assets/images/logo_banco_virtual.png')} style={styles.headerImage} />
+      }
+      
+    >
+      <ThemedView style={styles.container}>
+        <ThemedText type="title" style={styles.greeting}>OLÁ, DIEGO! 👋</ThemedText>
+        <ThemedText type="defaultSemiBold" style={styles.balanceLabel}>Saldo disponível:</ThemedText>
+        <ThemedText type="title" style={styles.balance}>R$ 5.230,75</ThemedText>
+
+        <ThemedView style={styles.actionsRow}>
+  <QuickActionButton label="Transferir" />
+  <QuickActionButton label="Depositar" />
+  <QuickActionButton label="Pagar" />
+</ThemedView>
+
+
+        <Collapsible title="Cartão de crédito">
+          <ThemedText>Limite disponível: <ThemedText type="defaultSemiBold">R$ 1.200,00</ThemedText></ThemedText>
+          <ThemedText>Próxima fatura: <ThemedText type="defaultSemiBold">R$ 800,00</ThemedText></ThemedText>
+        </Collapsible>
+
+        <Collapsible title="Últimas movimentações">
+          <TransactionItem label="Mercado Livre" amount="- R$ 220,00" />
+          <TransactionItem label="PIX recebido" amount="+ R$ 600,00" positive />
+          <TransactionItem label="Netflix" amount="- R$ 39,90" />
+          <ThemedText type="link" style={styles.link}>Ver todas as movimentações</ThemedText>
+        </Collapsible>
+
+        <ThemedText style={styles.footerInfo}>🔒 Segurança em dia · Atendimento 24h</ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
     </ParallaxScrollView>
+  );
+}
+
+function QuickActionButton({ label, image }: { label: string; image: any }) {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  // Função para animação quando o botão for pressionado
+  const onPressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Função para animação quando o botão for solto
+  const onPressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <Pressable onPressIn={onPressIn} onPressOut={onPressOut}>
+      <Animated.View style={[styles.quickAction, { transform: [{ scale: scaleAnim }] }]}>
+        <Image source={image} style={styles.quickActionImage} />
+        <ThemedText type="defaultSemiBold" style={styles.quickActionText}>{label}</ThemedText>
+      </Animated.View>
+    </Pressable>
+  );
+}
+
+function TransactionItem({
+  label,
+  amount,
+  positive = false,
+}: {
+  label: string;
+  amount: string;
+  positive?: boolean;
+}) {
+  return (
+    <ThemedView style={styles.transactionItem}>
+      <ThemedText>{label}</ThemedText>
+      <ThemedText style={{ color: positive ? 'green' : 'red' }}>{amount}</ThemedText>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: 20,
   },
-  titleContainer: {
+  container: {
+    padding: 16,
+    gap: 16,
+  },
+  greeting: {
+    fontSize: 24,
+  },
+  balanceLabel: {
+    fontSize: 16,
+    marginTop: 8,
+  },
+  balance: {
+    fontSize: 32,
+    color: '#00aa77',
+  },
+  actionsRow: {
     flexDirection: 'row',
-    gap: 8,
+    justifyContent: 'center',
+    gap: 12,
+    marginTop: 16,
   },
-}); 
+  quickAction: {
+    backgroundColor: '#33cc99',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 100,
+  },
+  quickActionImage: {
+    width: 32,
+    height: 32,
+    marginBottom: 8,
+    resizeMode: 'contain',
+  },
+  quickActionText: {
+    textAlign: 'center',
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+  },
+  link: {
+    marginTop: 10,
+    textAlign: 'right',
+  },
+  footerInfo: {
+    textAlign: 'center',
+    marginTop: 24,
+    fontSize: 12,
+    color: '#888',
+  },
+});
+
