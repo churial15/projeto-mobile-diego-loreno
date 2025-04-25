@@ -1,10 +1,25 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+  Pressable,
+} from 'react-native';
+import { useRef } from 'react';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { LoginForm } from '@/components/loginform';
-import SidebarMenu from '@/components/SidebarMenu'; // ✅ Importa o menu lateral
+import SidebarMenu from '@/components/SidebarMenu';
+
+const paymentOptions = [
+  { name: 'Pix', source: require('@/assets/images/pix.png') },
+  { name: 'Transferência', source: require('@/assets/images/transferencia.png') },
+  { name: 'Boleto', source: require('@/assets/images/boleto.png') },
+  { name: 'Cartão', source: require('@/assets/images/cartao.png') },
+];
 
 export default function HomeScreen() {
   return (
@@ -32,6 +47,12 @@ export default function HomeScreen() {
 
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">Tipos de pagamento:</ThemedText>
+
+          <View style={styles.paymentOptionsContainer}>
+            {paymentOptions.map((option, index) => (
+              <AnimatedButton key={index} source={option.source} />
+            ))}
+          </View>
         </ThemedView>
 
         <ThemedView style={styles.stepContainer}>
@@ -55,6 +76,55 @@ export default function HomeScreen() {
   );
 }
 
+// Componente de botão animado
+function AnimatedButton({ source }: { source: any }) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.9,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 3,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleHoverIn = () => {
+    Animated.spring(scale, {
+      toValue: 1.1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleHoverOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onHoverIn={handleHoverIn}
+      onHoverOut={handleHoverOut}
+      style={{ margin: 10 }}
+    >
+      <Animated.View style={[styles.circleButton, { transform: [{ scale }] }]}>
+        <Image source={source} style={styles.paymentImage} />
+      </Animated.View>
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
@@ -67,7 +137,7 @@ const styles = StyleSheet.create({
   },
   reactLogo: {
     width: '100%',
-    height: 250, // pode ajustar se quiser mais alta
+    height: 250,
     resizeMode: 'contain',
     alignSelf: 'center',
   },
@@ -103,6 +173,30 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#D3D3D3',
     marginBottom: 8,
+  },
+  paymentOptionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    paddingVertical: 12,
+  },
+  circleButton: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#fff',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  paymentImage: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
   },
 });
 
